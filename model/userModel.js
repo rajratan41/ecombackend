@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const validator = require("validator");
-const { default: isEmail } = require("validator/lib/isEmail");
-
+const bcrypt = require("bcryptjs");
 const userSchema = Schema({
   name: {
     type: String,
@@ -43,6 +42,17 @@ const userSchema = Schema({
     type: Date,
     default: Date.now,
   },
+});
+
+// Encrypt password before save to Database - using HOOKS (pre, post)
+userSchema.pre("save", async function (next) {
+  // if password is not modified by user
+  if (!this.isModified("password")) {
+    return next();
+  }
+
+  //  if password is modified by user
+  this.password = await bcrypt.hash(this.password, 10);
 });
 
 module.exports = mongoose.model("User", userSchema);
