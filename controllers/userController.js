@@ -10,4 +10,7 @@ exports.signup = BigPromise(async (req, res, next) => {
   if (!name || !email || !password) {
     return next(new CustomError("Name, Email and Password are Required", 400));
   }
+
+  //   all good then create user in Database
+  const user = await User.create({ name, email, password });
 });
