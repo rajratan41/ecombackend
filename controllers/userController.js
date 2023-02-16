@@ -1,16 +1,20 @@
 const User = require("../model/userModel");
 const BigPromise = require("../middleware/bigPromise");
 const CustomError = require("../utils/customError");
+const cookieToken = require("../utils/cookieToken");
 
 exports.signup = BigPromise(async (req, res, next) => {
-  // taking name, email, password from body
+  //    taking name, email, password from body
   const { name, email, password } = req.body;
 
-  // checking name, email, password is entered or not
+  //   checking name, email, password is entered or not
   if (!name || !email || !password) {
     return next(new CustomError("Name, Email and Password are Required", 400));
   }
 
   //   all good then create user in Database
   const user = await User.create({ name, email, password });
+
+  //   calling Cookie Token
+  cookieToken(user, res);
 });
