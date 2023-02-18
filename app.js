@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
-const fileupload = require("express-fileupload");
+const fileUpload = require("express-fileupload");
 
 // regular middleware
 app.use(express.json());
@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // express fileupload middleware
 app.use(
-  fileupload({
+  fileUpload({
     useTempFiles: true,
     tempFileDir: "/tmp/",
   })
